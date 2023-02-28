@@ -1,1 +1,1 @@
-# GPT-for-Unity
+# GPT-Unity
