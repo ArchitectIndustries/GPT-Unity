@@ -1,0 +1,51 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
+using System;
+using OpenAI;
+
+public class ChatGPT : MonoBehaviour
+{
+    public InputField inputField;
+    public Text outputText;
+    public Button submitButton;
+
+    private string api_key;
+    private string engine;
+    private string prompt;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        inputField.ActivateInputField();
+        api_key = GetAPIKey();
+        engine = "text-davinci-002";
+        prompt = "Ask me anything!";
+        OpenAI.api_key = api_key;
+        StartCoroutine("GenerateText");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    IEnumerator GenerateText()
+    {
+        while (true)
+        {
+            if (inputField.text != "" && Input.GetKeyDown(KeyCode.Return))
+            {
+                outputText.text += "\n" + inputField.text;
+                string user_input = inputField.text;
+                inputField.text = "";
+                prompt = "User: " + user_input + "\nAI:";
+                var response = OpenAI.Completion.Create(
+                    engine: engine,
+                    prompt: prompt,
+                    max_tokens: 1024,
+                    n: 1,
+                    stop: null,
+                    temperature: 0
