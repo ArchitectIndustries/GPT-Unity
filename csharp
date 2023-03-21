@@ -1,0 +1,21 @@
+using UnityEngine;
+using OpenAI;
+
+public class ScriptGenerator : MonoBehaviour
+{
+    async void Start()
+    {
+        // Set up the OpenAI API client
+        OpenAI.Client client = new OpenAI.Client("YOUR_API_KEY");
+
+        // Set up the ChatGPT tool
+        OpenAI.ChatGPT chatGPT = new OpenAI.ChatGPT(client, "chatbot");
+
+        // Generate a Unity C# script
+        string prompt = "Write me a Unity C# script that can be used as a loot table, rewarding the player with different items based on an assigned weight.";
+        string script = await chatGPT.Generate(prompt);
+
+        // Save the script to a file
+        System.IO.File.WriteAllText("Assets/Scripts/LootTable.cs", script);
+    }
+}
